@@ -1,0 +1,217 @@
+/* ──────── Fundo e corpo ──────── */
+html, body {
+  background: #1a1a2e;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.app-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(circle at 20% 30%, #2d2d44, #1a1a2e);
+  box-shadow: 0 0 50px rgba(0,0,0,0.5) inset;
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
+}
+
+ion-header {
+  flex-shrink: 0;
+}
+
+/* ──────── Área externa do carrossel + botões ──────── */
+.carrossel-outer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Botões de navegação */
+.carousel-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  padding: 12px 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.2s, opacity 0.2s;
+  opacity: 0.7;
+  backdrop-filter: blur(4px);
+}
+.carousel-nav-btn:hover {
+  background: rgba(238, 21, 21, 0.8);
+  opacity: 1;
+}
+#btn-prev { left: 10px; }
+#btn-next { right: 10px; }
+
+@media (max-width: 600px) {
+  .carousel-nav-btn {
+    font-size: 1.5rem;
+    padding: 8px 12px;
+  }
+}
+
+/* ──────── Carrossel ──────── */
+.carrossel-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  gap: 20px;
+  padding: 30px calc(50% - 100px) 40px;
+  align-items: center;
+  min-height: 400px;
+  outline: none;      /* remove contorno ao focar */
+}
+
+/* Para telas menores */
+@media (max-width: 800px) {
+  .carrossel-wrapper {
+    padding: 20px calc(50% - 80px) 30px;
+    gap: 16px;
+  }
+}
+@media (max-width: 500px) {
+  .carrossel-wrapper {
+    padding: 20px 16px 30px;
+    gap: 12px;
+  }
+}
+
+/* ──────── Cartão Pokébola ──────── */
+.pokeball-card {
+  flex: 0 0 200px;
+  height: 320px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  background: #f0f0f0;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,255,255,0.1) inset;
+  cursor: pointer;
+  scroll-snap-align: center;
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1), box-shadow 0.25s;
+  will-change: transform;
+}
+
+/* Hover (desktop) */
+.pokeball-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 35px rgba(238,21,21,0.5), 0 0 0 3px rgba(255,255,255,0.2);
+}
+
+/* Estado centralizado (carta ativa) – sobrepõe o hover */
+.pokeball-card.centered {
+  transform: scale(1.15);
+  box-shadow: 0 0 30px rgba(238, 21, 21, 0.9), 0 0 60px rgba(255, 255, 255, 0.7), 0 0 0 3px rgba(255,255,255,0.4);
+  z-index: 5;
+  animation: pulse-glow 2s infinite;
+}
+.pokeball-card.centered:hover {
+  transform: scale(1.15); /* impede hover de brigar com a escala */
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 30px rgba(238,21,21,0.9), 0 0 60px rgba(255,255,255,0.7); }
+  50% { box-shadow: 0 0 45px rgba(238,21,21,1), 0 0 90px rgba(255,255,255,0.9); }
+}
+
+/* Efeito pop-out ao clicar */
+.pokeball-card.pop-out {
+  animation: popAway 0.35s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes popAway {
+  0% { transform: scale(1.15); opacity: 1; }
+  30% { transform: scale(1.45); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Metades do cartão */
+.card-half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+}
+.card-half.red { top: 0; background: #ee1515; }
+.card-half.white { bottom: 0; background: #ffffff; }
+
+.card-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 6px;
+  background: #222;
+  transform: translateY(-50%);
+  z-index: 2;
+  box-shadow: 0 0 8px rgba(0,0,0,0.5);
+}
+
+.pokemon-img-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130px;
+  height: 130px;
+  background: white;
+  border: 6px solid #222;
+  border-radius: 50%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+}
+.pokemon-img-circle img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+.card-info {
+  position: absolute;
+  bottom: 15px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 4;
+  color: #222;
+}
+.card-info h3 { margin: 0; font-size: 1.1rem; font-weight: bold; text-transform: capitalize; }
+.card-info p { margin: 4px 0 0; font-size: 0.9rem; color: #555; }
+
+/* ──────── Botão Carregar mais ──────── */
+#load-more {
+  --background: linear-gradient(135deg, #ee1515, #8b0000);
+  --color: white;
+  font-weight: bold;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(238,21,21,0.5);
+  transition: transform 0.2s;
+}
+#load-more:hover { transform: scale(1.05); }
+
+/* Detalhes */
+ion-card img {
+  max-height: 300px;
+  object-fit: contain;
+  background: #f0f0f0;
+}
